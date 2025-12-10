@@ -33,20 +33,9 @@ func main() {
 		errorLog: errorlog,
 	}
 
-	// Initialize a new HTTP server mux (router)
-	mux := http.NewServeMux()
-
-	// Serve static files from ./ui/static/ directory under the /static/ URL path prefix
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
-
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/snippet/view", app.snippetView)
-	mux.HandleFunc("/snippet/create", app.snippetCreate)
-
 	srv := &http.Server{
 		Addr:     cfg.addr,
-		Handler:  mux,
+		Handler:  app.routes(),
 		ErrorLog: errorlog,
 	}
 
